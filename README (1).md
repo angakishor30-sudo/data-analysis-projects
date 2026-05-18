@@ -4,7 +4,7 @@
 
 **Project Title**: Retail Sales Analysis  
 **Level**: Beginner  
-**Database**: `p1_retail_db`
+**Database**: `sql_project`
 
 This project is designed to demonstrate SQL skills and techniques typically used by data analysts to explore, clean, and analyze retail sales data. The project involves setting up a retail sales database, performing exploratory data analysis (EDA), and answering specific business questions through SQL queries. This project is ideal for those who are starting their journey in data analysis and want to build a solid foundation in SQL.
 
@@ -23,7 +23,7 @@ This project is designed to demonstrate SQL skills and techniques typically used
 - **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
 
 ```sql
-CREATE DATABASE p1_retail_db;
+CREATE DATABASE sql_project;
 
 CREATE TABLE retail_sales
 (
@@ -49,23 +49,90 @@ CREATE TABLE retail_sales
 - **Null Value Check**: Check for any null values in the dataset and delete records with missing data.
 
 ```sql
-SELECT COUNT(*) FROM retail_sales;
-SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
-SELECT DISTINCT category FROM retail_sales;
+SELECT * FROM retail_sales
+WHERE transactions_id IS NULL
+
+SELECT * FROM retail_sales
+WHERE sale_date IS NULL
+
+SELECT * FROM retail_sales
+WHERE sale_time IS NULL
+
+SELECT * FROM retail_sales
+WHERE customer_id IS NULL
+
+SELECT * FROM retail_sales
+WHERE gender IS NULL
 
 SELECT * FROM retail_sales
 WHERE 
-    sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-    gender IS NULL OR age IS NULL OR category IS NULL OR 
-    quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
-
-DELETE FROM retail_sales
-WHERE 
-    sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-    gender IS NULL OR age IS NULL OR category IS NULL OR 
-    quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+     transactions_id IS NULL
+	 OR
+	 sale_date IS NULL
+	 OR
+	 sale_time IS NULL
+	 OR
+	 customer_id IS NULL
+	 OR
+	 gender IS NULL
+	 OR
+     age IS NULL
+	 OR
+	 category IS NULL
+	 OR
+	 quantiy IS NULL
+	 OR
+	 price_per_unit IS NULL
+	 OR
+	 cogs IS NULL
+	 OR
+	 total_sale IS NULL
 ```
+### replacing the null with avarage value
+```sql
+SELECT * FROM retail_sales
+WHERE age IS NULL
 
+SELECT age FROM retail_sales
+
+SELECT ROUND(AVG(age)) FROM retail_sales
+
+UPDATE retail_sales
+SET age = (
+    SELECT ROUND(AVG(age))::INT
+    FROM retail_sales
+)
+WHERE age IS NULL;
+
+SELECT * FROM retail_sales
+WHERE age IS NULL
+```
+### removing null values
+```sql
+    DELETE FROM retail_sales
+WHERE 
+     transactions_id IS NULL
+	 OR
+	 sale_date IS NULL
+	 OR
+	 sale_time IS NULL
+	 OR
+	 customer_id IS NULL
+	 OR
+	 gender IS NULL
+	 OR
+     age IS NULL
+	 OR
+	 category IS NULL
+	 OR
+	 quantiy IS NULL
+	 OR
+	 price_per_unit IS NULL
+	 OR
+	 cogs IS NULL
+	 OR
+	 total_sale IS NULL
+```
 ### 3. Data Analysis & Findings
 
 The following SQL queries were developed to answer specific business questions:
@@ -79,15 +146,12 @@ WHERE sale_date = '2022-11-05';
 
 2. **Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 4 in the month of Nov-2022**:
 ```sql
-SELECT 
-  *
+SELECT *
 FROM retail_sales
-WHERE 
-    category = 'Clothing'
-    AND 
-    TO_CHAR(sale_date, 'YYYY-MM') = '2022-11'
-    AND
-    quantity >= 4
+WHERE category = 'Clothing'
+  AND sale_date >= '2022-11-01'
+  AND sale_date < '2022-12-01'
+  AND quantiy >= 4
 ```
 
 3. **Write a SQL query to calculate the total sales (total_sale) for each category.**:
@@ -214,14 +278,3 @@ This project serves as a comprehensive introduction to SQL for data analysts, co
 ## Author - Zero Analyst
 
 This project is part of my portfolio, showcasing the SQL skills essential for data analyst roles. If you have any questions, feedback, or would like to collaborate, feel free to get in touch!
-
-### Stay Updated and Join the Community
-
-For more content on SQL, data analysis, and other data-related topics, make sure to follow me on social media and join our community:
-
-- **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
-- **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
-- **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
-- **Discord**: [Join our community to learn and grow together](https://discord.gg/36h5f2Z5PK)
-
-Thank you for your support, and I look forward to connecting with you!
